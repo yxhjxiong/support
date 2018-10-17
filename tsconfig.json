@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"noImplicitAny": false,
+		"sourceMap": false,
+		"declaration": true,
+		"outFile": "bin/support.js"
+	},
+	"exclude": [
+		
+	],
+	"include": [
+		"src",
+		"libs/**/**.d.ts"
+	]
+}
