@@ -6,6 +6,9 @@ module support
      */
     export class CmdBus extends BusBase
     {
+        private static _instance:CmdBus;
+		private static _allowInstance:Boolean;
+
 		private _iSocket:SmartSocket;
 		private _host:string;
         private _port:number;
@@ -20,12 +23,12 @@ module support
             {
                 throw new egret.error("不能直接实例化CmdBus类");
             }
-
+            
             this._bytes = new egret.ByteArray();
             this._bytes.endian = egret.Endian.BIG_ENDIAN;
         }
 
-        public static getInstance():IBus
+        public static instance():CmdBus
 		{
 			if (!this._instance)
             {
@@ -34,25 +37,22 @@ module support
                 this._allowInstance = false;
             }
             return this._instance;
-        }
-        
+		}
+
         /**
          * 连接socket
-         * @param host 
-         * @param port 
          */
         public connect(host:string, port:number):void
         {
             if(this._iSocket)
             {
-                Pools.getInstance().returnItem(this._iSocket);
+                SmartSocket.close(this._host, port);
                 this._iSocket = null;
             }
             this._host = host;
             this._port = port;
-            
-            this._iSocket = SmartSocket.connect(this._host, this._port, this, 
-                this.receive, this.closed, this.connected, this.error);
+
+            this._iSocket = SmartSocket.connect(this._host, this._port, this, this.receive);
         }
 		
 		/**
@@ -60,7 +60,7 @@ module support
          */        
         public unbind(cmd:number, callback:Function, callobj:any):void
         {
-            super.removeCallback(cmd, callback);
+            super.removeCallback(cmd, callback, callobj);
         }
 
         /**
@@ -107,22 +107,7 @@ module support
             let json = JSON.parse(msg);
             Debug.print("receive", json);
             self.riseCallback(json.cmd, json);
-        }
-        
-        private connected():void
-        {
-
-        }
-
-        private closed():void
-        {
-
-        }
-
-        private error():void
-        {
-
-        }
+		}
 
     }
 }

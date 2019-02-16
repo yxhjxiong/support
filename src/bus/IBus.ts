@@ -6,9 +6,9 @@ module support
 	  */
 	export interface IBus
 	{
-		addCallback(key: any, callback: Function, callobj: any): void;
+		addCallback(key: any, callback: Function, callobj: any, ...params): void;
 
-		removeCallback(key: any, callback: Function): void;
+		removeCallback(key: any, callback: Function, callobj: any): void;
 
 		riseCallback(key:any, ...args):void;
 

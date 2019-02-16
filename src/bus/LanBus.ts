@@ -6,6 +6,9 @@ module support
 	 */
 	export class LanBus extends BusBase
 	{
+		private static _instance:LanBus;
+		private static _allowInstance:Boolean;
+
 		private _lanDic:any = {};
 
 		public constructor()
@@ -18,7 +21,7 @@ module support
             }
 		}
 
-		public static getInstance():IBus
+		public static instance():LanBus
 		{
 			if (!this._instance)
             {

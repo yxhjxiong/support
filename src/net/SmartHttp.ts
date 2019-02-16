@@ -1,11 +1,10 @@
-///<reference path="../pool/Poolable.ts" />
 module support
 {
     /**
      * 通信Http
      * @author zx
      */
-    export class SmartHttp extends Poolable
+    export class SmartHttp extends egret.HashObject implements IPoolable
     {
         public _http: egret.HttpRequest;
 
@@ -25,8 +24,6 @@ module support
 
         public initPoolable(...params):void
         {
-            super.initPoolable(...params);
-
             let param = params[0];
             this._callTarget = param.target;
             this._completeCallback = param.complete;
@@ -35,8 +32,6 @@ module support
 
         public resetPoolable():void
         {
-            super.resetPoolable();
-
             this._callTarget = null;
             this._completeCallback = null;
             this._ioErrorCallback = null;
@@ -52,8 +47,6 @@ module support
             this._callTarget = null;
             this._completeCallback = null;
             this._ioErrorCallback = null;
-
-            super.dispose();
         }
 
         public post(url:string, param:any = null, type:string = egret.HttpResponseType.TEXT):void
@@ -97,14 +90,14 @@ module support
             if (this._callTarget && this._completeCallback) {
                 this._completeCallback.call(this._callTarget, [http.response]);
             }
-            Pools.getInstance().returnItem(this);
+            Pools.returnItem(this);
         }
 
         private onHttpIOError(event: egret.IOErrorEvent): void {
             if (this._callTarget && this._ioErrorCallback) {
                 this._ioErrorCallback.call(this._callTarget);
             }
-            Pools.getInstance().returnItem(this);
+            Pools.returnItem(this);
         }
 
         private onHttpProgress(event: egret.ProgressEvent): void {
@@ -119,7 +112,7 @@ module support
          */
         public static post(url:string, param:any = null, type:string = egret.HttpResponseType.TEXT):void
         {
-            let http = <SmartHttp>Pools.getInstance().borrowItem(SmartHttp);
+            let http = <SmartHttp>Pools.borrowItem(SmartHttp);
             http.post(url, param, type);
         }
 
@@ -131,7 +124,7 @@ module support
          */
         public static get(url:string, param:any = null, type:string = egret.HttpResponseType.TEXT):void
         {
-            let http = <SmartHttp>Pools.getInstance().borrowItem(SmartHttp);
+            let http = <SmartHttp>Pools.borrowItem(SmartHttp);
             http.get(url, param, type);
         }
     }

@@ -6,9 +6,6 @@ module support
 	 */
 	export class BusBase implements IBus
 	{
-		protected static _instance:IBus;
-		protected static _allowInstance:Boolean;
-		
 		private _callbackDic:any = {};
 
 		public constructor()
@@ -22,7 +19,7 @@ module support
 		 * @param callback 回调函数
 		 * @param callobj 回调对象
 		 */
-		public addCallback(key:any, callback:Function, callobj:any):void
+		public addCallback(key:any, callback:Function, callobj:any, ...params):void
 		{
 			var callbackList:any[] = this.getCallbackList(key);
 			if (null == callbackList)
@@ -30,7 +27,7 @@ module support
 				callbackList = [];
 				this._callbackDic[key] = callbackList;
 			}
-			callbackList.push({callback, callobj});
+			callbackList.push({callback, callobj, params});
 
 		}
 
@@ -39,18 +36,17 @@ module support
 		 * @param key 回调所绑定的特殊健
 		 * @param callback 回调函数
 		 */
-		public removeCallback(key:any, callback:Function):void
+		public removeCallback(key:any, callback:Function, callobj:any):void
 		{
 			var callbackList:any[] = this.getCallbackList(key);
 			if (null == callbackList)	return;
 
 			let len = callbackList.length;
-			for(let i = 0; i < len; i++)
+			for(let i = len - 1; i >= 0; i--)
 			{
-				if(callbackList[i].callback == callback)
+				if(callbackList[i].callback == callback && callbackList[i].callobj == callobj)
 				{
 					callbackList.splice(i, 1);
-					break;
 				}
 			}
 			if (callbackList.length == 0)
@@ -74,8 +70,13 @@ module support
 			{
 				let callback:Function = callbackList[i].callback;
 				let callobj:any = callbackList[i].callobj;
+				let params:any[] = callbackList[i].params;
 				if(!callback || callobj)	continue;
-				callback.apply(callobj, args);
+				if(params){
+					callback.apply(callobj, params.concat(args));
+				}else{
+					callback.apply(callobj, args);
+				}
 			}
 		}
 

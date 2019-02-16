@@ -1,18 +1,16 @@
-class StringUtil 
-{
+class StringUtil {
     /**
      * 去掉头尾空白字符
      * @param str 
      */
-    public static trim(str:string):string
-    {
+    public static trim(str: string): string {
         if (str == null) return '';
-        
-        var startIndex:number = 0;
+
+        var startIndex: number = 0;
         while (this.isWhitespace(str.charAt(startIndex)))
             ++startIndex;
 
-        var endIndex:number = str.length - 1;
+        var endIndex: number = str.length - 1;
         while (this.isWhitespace(str.charAt(endIndex)))
             --endIndex;
 
@@ -26,8 +24,7 @@ class StringUtil
      * 去头空格
      * @param char 
      */
-    public static ltrim(char: string): string 
-    {
+    public static ltrim(char: string): string {
         if (!char) return char;
 
         return char.replace(/^\s*/, "");
@@ -37,8 +34,7 @@ class StringUtil
      * 去尾空格
      * @param char 
      */
-    public static rtrim(char: string): string 
-    {
+    public static rtrim(char: string): string {
         if (!char) return char;
 
         return char.replace(/\s*$/, "");
@@ -48,10 +44,8 @@ class StringUtil
      * 是否空白字符
      * @param character 
      */
-    public static isWhitespace(character:string):Boolean
-    {
-        switch (character)
-        {
+    public static isWhitespace(character: string): Boolean {
+        switch (character) {
             case " ":
             case "\t":
             case "\r":
@@ -69,37 +63,31 @@ class StringUtil
      * @param str 
      * @param args 
      */
-    public static substitute(str: string, ...args): string 
-    {
+    public static substitute(str: string, ...args): string {
         if (!str) return str;
 
         let len = args.length;
-        for (let i = 0; i < len; i++) 
-        {
+        for (let i = 0; i < len; i++) {
             str = str.replace(new RegExp("\\{" + i + "\\}", "g"), args[i]);
         }
         return str;
     }
 
     /**
-     * 是否为Email地址
-     * @param char 
+     * 设置带颜色文本
      */
-    public static isEmail(char: string): Boolean
-     {
-        if (!char) return false;
-
-        char = this.trim(char);
-        var pattern: RegExp = /(\w|[_.\-])+@((\w|-)+\.)+\w{2,4}+/;
-        return (pattern.exec(char) != null);
+    public static setColorString(str: string, color: any) {
+        if (!isNaN(color)) {
+            color = egret.toColorString(color);
+        }
+        return this.substitute("<color='{0}'>{1}</color>", color, str);
     }
 
     /**
      * 中文
      * @param char 
      */
-    public static isChinese(char: string): Boolean 
-    {
+    public static isChinese(char: string): Boolean {
         if (!char) return false;
 
         char = this.trim(char);
@@ -111,8 +99,7 @@ class StringUtil
      * 含有中文字符
      * @param char 
      */
-    public static hasChineseChar(char: string): Boolean 
-    {
+    public static hasChineseChar(char: string): Boolean {
         if (!char) return false;
 
         char = this.trim(char);
@@ -124,8 +111,7 @@ class StringUtil
      * URL地址
      * @param char 
      */
-    public static isURL(char: string): Boolean 
-    {
+    public static isURL(char: string): Boolean {
         if (!char) return false;
 
         char = this.trim(char).toLowerCase();
@@ -137,8 +123,7 @@ class StringUtil
      * utf16转utf8编码
      * @param char 
      */
-    public static utf16to8(char: string): string 
-    {
+    public static utf16to8(char: string): string {
         var out: any[] = [];
         var len: number = char.length;
         for (var i: number = 0; i < len; i++) {
@@ -161,8 +146,7 @@ class StringUtil
      * utf8转utf16编码
      * @param char 
      */
-    public static utf8to16(char: string): string 
-    {
+    public static utf8to16(char: string): string {
         var out: any[] = [];
         var len: number = char.length;
         var i: number = 0;

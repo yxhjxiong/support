@@ -6,9 +6,7 @@
 		"declaration": true,
 		"outFile": "bin/support.js"
 	},
-	"exclude": [
-		
-	],
+	"exclude": [],
 	"include": [
 		"src",
 		"libs/**/**.d.ts"

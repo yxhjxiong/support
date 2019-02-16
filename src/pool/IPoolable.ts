@@ -5,7 +5,7 @@ module support
 	 * 注：接口内的方法都由对象池来调用,用户无需自行调用.
 	 * @author zx
 	 */
-	export interface IPoolable extends IDispose
+	export interface IPoolable extends IDispose, egret.IHashObject
 	{
 		/**
 		 * 初始化对象池对象
@@ -17,14 +17,5 @@ module support
 		 * 释放对象池对象
 		 */
 		resetPoolable():void;
-		
-		/**
-		 * 设置索引
-		 */		
-		setPoolIndex(value:number):void;
-		/**
-		 * 获取索引
-		 */	
-		getPoolIndex():number;
 	}
 }

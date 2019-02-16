@@ -1,11 +1,10 @@
-///<reference path="../pool/Poolable.ts" />
 module support
 {
     /**
      * 通信Socket
      * @author zx
      */
-    export class SmartSocket extends Poolable
+    export class SmartSocket extends egret.HashObject implements IPoolable
     {
         public static readonly PING_REFRESH:String = "PING_REFRESH";
         
@@ -40,8 +39,6 @@ module support
         
         public initPoolable(...params):void
         {
-            super.initPoolable(...params);
-
             let param = params[0];
             this._callTarget = param.target;
             this._closeCallback = param.closed;
@@ -52,8 +49,6 @@ module support
         
         public resetPoolable():void
         {
-            super.resetPoolable();
-            
             this.close();
             
             this._callTarget = null;
@@ -80,8 +75,6 @@ module support
 
             this._receive.clear();
             this._receive = null;
-
-            super.dispose();
         }
 
         /**
@@ -195,7 +188,7 @@ module support
 			var socket:SmartSocket = this._sockets[key];
 			if (socket == null)
 			{
-				socket = Pools.getInstance().borrowItem(SmartSocket, param) as SmartSocket;
+				socket = Pools.borrowItem(SmartSocket, param) as SmartSocket;
             }else
             {
                 socket.initPoolable(param);
@@ -223,7 +216,7 @@ module support
 			}
 			
 			delete this._sockets[key];
-			Pools.getInstance().returnItem(socket);
+			Pools.returnItem(socket);
 			
 			// Debug.log("Socket请求关闭, host:{0}, port:{1}", host, port);
 		}
