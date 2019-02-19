@@ -1,16 +1,14 @@
-module support
-{
+module support {
     /**
      * 通信Http
      * @author zx
      */
-    export class SmartHttp extends egret.HashObject implements IPoolable
-    {
+    export class SmartHttp extends egret.HashObject implements IPoolable {
         public _http: egret.HttpRequest;
 
-        private _callTarget:any;
-        private _completeCallback:Function;
-        private _ioErrorCallback:Function;
+        private _callTarget: any;
+        private _completeCallback: Function;
+        private _ioErrorCallback: Function;
 
         public constructor() {
             super();
@@ -22,23 +20,20 @@ module support
             this._http.addEventListener(egret.ProgressEvent.PROGRESS, this.onHttpProgress, this);
         }
 
-        public initPoolable(...params):void
-        {
+        public initPoolable(...params): void {
             let param = params[0];
             this._callTarget = param.target;
             this._completeCallback = param.complete;
             this._ioErrorCallback = param.ioError;
         }
 
-        public resetPoolable():void
-        {
+        public resetPoolable(): void {
             this._callTarget = null;
             this._completeCallback = null;
             this._ioErrorCallback = null;
         }
 
-        public dispose(): void 
-        {
+        public dispose(): void {
             this._http.removeEventListener(egret.Event.COMPLETE, this.onHttpComplete, this);
             this._http.removeEventListener(egret.IOErrorEvent.IO_ERROR, this.onHttpIOError, this);
             this._http.removeEventListener(egret.ProgressEvent.PROGRESS, this.onHttpProgress, this);
@@ -49,33 +44,30 @@ module support
             this._ioErrorCallback = null;
         }
 
-        public post(url:string, param:any = null, type:string = egret.HttpResponseType.TEXT):void
-        {
+        public post(url: string, param: any = null, type: string = egret.HttpResponseType.TEXT): void {
             this.run(egret.HttpMethod.POST, url, param, type);
         }
 
-        public get(url:string, param:any = null, type:string = egret.HttpResponseType.TEXT):void
-        {
+        public get(url: string, param: any = null, type: string = egret.HttpResponseType.TEXT): void {
             this.run(egret.HttpMethod.GET, url, param, type);
         }
 
-        private run(method: string, url:string, param:any, type:string):void
-        {
+        private run(method: string, url: string, param: any, type: string): void {
             let paramStr = "";
-            if(param){
-                if(typeof (param) == 'object'){
+            if (param) {
+                if (typeof (param) == 'object') {
                     for (let key in param) {
                         paramStr += (key + '=' + param[key] + '&');
                     }
                     paramStr = paramStr.substr(0, paramStr.length - 1);
-                }else{
+                } else {
                     paramStr = String(param);
                 }
-                if(paramStr.length > 0){
+                if (paramStr.length > 0) {
                     url += ('?' + paramStr);
                 }
             }
-            
+
             if (method == egret.HttpMethod.POST) {
                 this._http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             }
@@ -110,9 +102,9 @@ module support
          * @param param 参数
          * @param type 返回的数据格式
          */
-        public static post(url:string, param:any = null, type:string = egret.HttpResponseType.TEXT):void
-        {
-            let http = <SmartHttp>Pools.borrowItem(SmartHttp);
+        public static post(url: string, param: any = null, complete?: Function, ioError?: Function, target?: any,
+            type: string = egret.HttpResponseType.TEXT): void {
+            let http = <SmartHttp>Pools.borrowItem(SmartHttp, {complete, ioError, target});
             http.post(url, param, type);
         }
 
@@ -122,9 +114,9 @@ module support
          * @param param 
          * @param type 
          */
-        public static get(url:string, param:any = null, type:string = egret.HttpResponseType.TEXT):void
-        {
-            let http = <SmartHttp>Pools.borrowItem(SmartHttp);
+        public static get(url: string, param: any = null, complete?: Function, ioError?: Function, target?: any,
+            type: string = egret.HttpResponseType.TEXT): void {
+            let http = <SmartHttp>Pools.borrowItem(SmartHttp, {complete, ioError, target});
             http.get(url, param, type);
         }
     }

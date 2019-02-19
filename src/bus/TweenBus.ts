@@ -6,31 +6,12 @@ module support
 	 */
 	export class TweenBus extends BusBase
 	{
-		private static _instance:TweenBus;
-		private static _allowInstance:Boolean;
-
 		//缓动集合
         private tweenDic:any = {};
 
 		public constructor()
 		{
 			super();
-			
-			if (!TweenBus._allowInstance)
-            {
-                throw new egret.error("不能直接实例化TweenBus类");
-            }
-		}
-
-		public static instance():TweenBus
-		{
-			if (!this._instance)
-            {
-                this._allowInstance = true;
-                this._instance = new TweenBus();
-                this._allowInstance = false;
-            }
-            return this._instance;
 		}
 		
 		/**

@@ -46,6 +46,6 @@ class Debug {
         if (typeof msg === "string") {
             msg = StringUtil.substitute(msg, ...args);
         }
-        console.log(msg, ...args);
+        egret.log(msg, ...args);
     }
 }

@@ -6,30 +6,11 @@ module support
 	 */
 	export class LanBus extends BusBase
 	{
-		private static _instance:LanBus;
-		private static _allowInstance:Boolean;
-
 		private _lanDic:any = {};
 
 		public constructor()
 		{
 			super();
-			
-			if (!LanBus._allowInstance)
-            {
-                throw new egret.error("不能直接实例化LanBus类");
-            }
-		}
-
-		public static instance():LanBus
-		{
-			if (!this._instance)
-            {
-                this._allowInstance = true;
-                this._instance = new LanBus();
-                this._allowInstance = false;
-            }
-            return this._instance;
 		}
 		
 		/**

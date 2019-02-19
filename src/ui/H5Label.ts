@@ -17,11 +17,11 @@ module support{
         }
 
         public set lanCode(code:number){
-            this.htmlText = support.LanBus.instance().getBindStr(code);
+            this.htmlText = Bus.Lan.getStr(code);
         }
 
         public set htmlLanCode(code:number){
-            this.htmlText = support.LanBus.instance().getStr(code);
+            this.htmlText = Bus.Lan.getStr(code);
         }
     }
 }
