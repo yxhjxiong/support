@@ -55,7 +55,7 @@ class ThemeAdapter implements eui.IThemeAdapter {
             }, this);
         }
         else if (typeof generateEUI2 !== 'undefined') {
-            RES.getResByUrl(Global.Config.resRoot+"gameEui.json", (data, url) => {
+            RES.getResByUrl(GConfig.resRoot+"gameEui.json", (data, url) => {
                 window["JSONParseClass"]["setData"](data);
                 onResGet(data);
                 egret.callLater(() => {

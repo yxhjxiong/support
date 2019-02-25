@@ -1,30 +1,30 @@
-class GlobalExternal {
+class GExternal {
 
-    public firstEnter = true;  //第一次进入
-    public isLogin:boolean = false;
+    public static firstEnter = true;  //第一次进入
+    public static isLogin:boolean = false;
 
     /** 加载代码文件 */
-    public loadScript:Function;
+    public static loadScript:Function;
 
-    public isNative(): boolean {
+    public static isNative(): boolean {
         if (egret.RuntimeType.NATIVE == egret.Capabilities.runtimeType) {
             return true;
         }
         return false;
     }
 
-    public isRuntime2() {
+    public static isRuntime2() {
         if (egret.RuntimeType.RUNTIME2 == egret.Capabilities.runtimeType) {
             return true;
         }
         return false;
     }
 
-    public isApp() {
+    public static isApp() {
         return this.isRuntime2() || this.isNative();
     }
 
-    public init(){
+    public static init(){
         // TypeScript 代码
         // egret.ExternalInterface.addCallback("setAppOptions", function (message:string) {
         //     egret.log("message form native setAppOptions: " + message);
@@ -41,7 +41,7 @@ class GlobalExternal {
         //     if (GlobalExternal.lodingUI) {
         //         GlobalExternal.lodingUI.showLoginAccount();
         //     } else {
-        //         com_main['ServerManager'] && com_main['ServerManager'].logoutGame(true);
+        //         h5game['ServerManager'] && h5game['ServerManager'].logoutGame(true);
         //     }
         // });
 
@@ -75,7 +75,7 @@ class GlobalExternal {
         }
      * @param json
      */
-    public parseLogingOptions(options:any){
+    public static parseLogingOptions(options:any){
         // ClientConst.isShowAccount = false;
         // LocalData.setOpenId(options.uid);
         // ClientConst.uid = options.uid;
@@ -114,12 +114,12 @@ class GlobalExternal {
         //     if (GlobalExternal.lodingUI) {
         //         GlobalExternal.lodingUI.showArea();
         //     } else if (!GlobalExternal.firstEnter) {
-        //         com_main['ServerManager'] && com_main['ServerManager'].logoutGame();
+        //         h5game['ServerManager'] && h5game['ServerManager'].logoutGame();
         //     }
         // }
     }
 
-    public parseAppOptions(json:string){
+    public static parseAppOptions(json:string){
         // debug("parseAppOptions",json);
         // let options = JSON.parse(json);
         // ClientConst.VERSION = options.version;
@@ -159,7 +159,7 @@ class GlobalExternal {
         // GlobalExternal.lodingUI && GlobalExternal.lodingUI.setPlatformUI();
     }
 
-    private setPlatformCopyright() {
+    private static setPlatformCopyright() {
         // if (ClientConst.platform == "quickhunfu" || ClientConst.platform == "yaowanyybhf") {
         //     ClientConst.ISBN = 'ISBN:978-7-89447-170-3';
         //     ClientConst.GameWord = '';
@@ -171,50 +171,50 @@ class GlobalExternal {
         // }
     }
 
-    private sendCodeInit(){
+    private static sendCodeInit(){
         egret.ExternalInterface.call("codeInit","");
     }
 
-    public sendEnterGame(str:string){
+    public static sendEnterGame(str:string){
         egret.ExternalInterface.call("enterGame",str);
     }
 
-    public sendShowSdkLogin(str:string = ""){
+    public static sendShowSdkLogin(str:string = ""){
         egret.ExternalInterface.call("showSdkLogin",str);
     }
 
-    public showLogin(str:string = ""){
+    public static showLogin(str:string = ""){
         egret.ExternalInterface.call("showLogin",str);
     }
 
-    public showWdLogin(str:string = ""){
+    public static showWdLogin(str:string = ""){
         egret.ExternalInterface.call("showWdLogin",str);
     }
 
-    public sendLogout(str:string = ""){
+    public static sendLogout(str:string = ""){
         egret.ExternalInterface.call("logout",str);
     }
 
-    public sendRoleInfo(rid,roleName,serverId,serverName){
+    public static sendRoleInfo(rid,roleName,serverId,serverName){
         let data = {rid,roleName,serverId,serverName};
         let str = JSON.stringify(data);
         egret.ExternalInterface.call("roleInfo",str);
     }
 
-    public sendCreateRole(rid,roleName,serverId,serverName){
+    public static sendCreateRole(rid,roleName,serverId,serverName){
         let data = {rid,roleName,serverId,serverName};
         let str = JSON.stringify(data);
         egret.ExternalInterface.call("createRole",str);
     }
 
-    public sendPayment(str:string = ""){
+    public static sendPayment(str:string = ""){
         egret.ExternalInterface.call("payment",str);
     }
 
     /**
      * 设置角色信息
      */
-    public setGameRoleInfo(serverID, serverName, gameRoleName, gameRoleID, gameRoleBalance, 
+    public static setGameRoleInfo(serverID, serverName, gameRoleName, gameRoleID, gameRoleBalance, 
             vipLevel, gameRoleLevel, sexId, partyId, partyName , roleCreateTime, isCreate, reportType,
             roleForce,career,careerName) {
 
@@ -250,7 +250,7 @@ class GlobalExternal {
     }
 
     /**上报游戏状态-选择服务器 */
-    public sendChooseServer() {
+    public static sendChooseServer() {
         // GlobalExternal.setGameRoleInfo(
         //     ClientConst.serverId, 
         //     ClientConst.serverName,
@@ -271,7 +271,7 @@ class GlobalExternal {
         // );
     }
 
-    public captureScreen() {
+    public static captureScreen() {
         // var renderTexture:egret.RenderTexture = new egret.RenderTexture();
         // renderTexture.drawToTexture(GlobalExternal.client.stage);
         // var str = renderTexture.toDataURL("image/png");

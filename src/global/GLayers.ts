@@ -2,41 +2,41 @@
  * 全局分层定义
  * @author zx
  */
-class GlobalLayers {
+class GLayers {
 	/** 根容器 */
-	public root: egret.DisplayObjectContainer = null;
+	public static root: egret.DisplayObjectContainer = null;
 	/** 场景层 */
-	public scene: egret.Sprite = null;
+	public static scene: egret.Sprite = null;
 	/** 战斗层 */
-	public battle: egret.Sprite = null;
+	public static battle: egret.Sprite = null;
 	/** UI层 */
-	public ui: egret.Sprite = null;
+	public static ui: egret.Sprite = null;
 	/** 窗口层 */
-	public window: egret.Sprite = null;
+	public static window: egret.Sprite = null;
 	/** 效果层 */
-	public effect: egret.Sprite = null;
+	public static effect: egret.Sprite = null;
 	/** 辅助层 */
-	public helper: egret.Sprite = null;
+	public static helper: egret.Sprite = null;
 	/** 消息层 */
-	public message: egret.Sprite = null;
+	public static message: egret.Sprite = null;
 	/** 通知层 */
-	public notify: egret.Sprite = null;
+	public static notify: egret.Sprite = null;
 	/** 引导层 */
-	public guide: egret.Sprite = null;
+	public static guide: egret.Sprite = null;
 	/** 剧情层 */
-	public gameflow: egret.Sprite = null;
+	public static gameflow: egret.Sprite = null;
 	/** 对话框层 */
-	public dialog: egret.Sprite = null;
+	public static dialog: egret.Sprite = null;
 	/** 公共控制层 */
-	public controller: egret.Sprite = null;
+	public static controller: egret.Sprite = null;
 	/** tips层 */
-	public tips: egret.Sprite = null;
+	public static tips: egret.Sprite = null;
 	/** 加载专用层 */
-	public loading: egret.Sprite = null;
+	public static loading: egret.Sprite = null;
 	/** 调试层 */
-	public debug: egret.Sprite = null;
+	public static debug: egret.Sprite = null;
 
-	public init(container: egret.DisplayObjectContainer): void {
+	public static init(container: egret.DisplayObjectContainer): void {
 		let self = this;
 		self.root = container;
 		self.root.touchEnabled = false;

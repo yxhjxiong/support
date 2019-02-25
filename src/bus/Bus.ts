@@ -1,35 +1,38 @@
+/**
+ * 总线集合
+ */
 class Bus {
     /** 命令总线 */
-    public static Cmd: support.CmdBus;
+    public static Cmd: CmdBus;
     /** 配置总线 */
-    public static Conf: support.CfgBus;
+    public static Conf: ConfBus;
     /** 语言总线 */
-    public static Lan: support.LanBus;
+    public static Lan: LanBus;
     /** 缓动总线 */
-    public static Tween: support.TweenBus;
+    public static Tween: TweenBus;
     /** 事件总线 */
-    public static Event: support.EventBus;
+    public static Event: EventBus;
 
     public static init(): void {
         let self = this;
         if (!self.Cmd) {
-            self.Cmd = new support.CmdBus();
+            self.Cmd = new CmdBus();
         }
 
         if (!self.Conf) {
-            self.Conf = new support.CfgBus();
+            self.Conf = new ConfBus();
         }
 
         if (!self.Lan) {
-            self.Lan = new support.LanBus();
+            self.Lan = new LanBus();
         }
 
         if (!self.Tween) {
-            self.Tween = new support.TweenBus();
+            self.Tween = new TweenBus();
         }
 
         if (!self.Event) {
-            self.Event = new support.EventBus();
+            self.Event = new EventBus();
         }
     }
 }

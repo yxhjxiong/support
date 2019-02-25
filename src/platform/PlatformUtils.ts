@@ -42,8 +42,8 @@ class PlatformUtils {
     public static getSwitch(callback: Function, target: any){
         let params: any = {};
         params.action = "game.game_ver";
-        params.ver = Global.Config.version;
-        support.SmartHttp.get(Global.Config.platform, params, callback, null, target);
+        params.ver = GConfig.version;
+        SmartHttp.get(GConfig.platform, params, callback, null, target);
     }
 
     // public static getGzhInfo(callback: Function, target: any){

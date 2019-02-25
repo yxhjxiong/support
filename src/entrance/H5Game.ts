@@ -19,7 +19,9 @@ class H5Game extends egret.DisplayObjectContainer {
             this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
         }
 
-        Global.init(this.stage, this);
+        GContext.init(this.stage);
+        GLayers.init(this);
+        GExternal.init();
         Bus.init();
 
         // window.platform && window.platform.loadSplash && window.platform.loadSplash();
@@ -49,13 +51,13 @@ class H5Game extends egret.DisplayObjectContainer {
     private initFont() {
         let os = egret.Capabilities.os;
         if ("iOS" == os || "Mac OS" == os) {
-            Global.Config.fontFamily = "Helvetica";
+            GConfig.fontFamily = "Helvetica";
         } else if ("Android" == os) {
-            Global.Config.fontFamily = "Droid Sans Fallback";
+            GConfig.fontFamily = "Droid Sans Fallback";
         } else {
-            Global.Config.fontFamily = "Microsoft YaHei";
+            GConfig.fontFamily = "Microsoft YaHei";
         }
-        egret.TextField.default_fontFamily = Global.Config.fontFamily;
+        egret.TextField.default_fontFamily = GConfig.fontFamily;
     }
 
     private initAssetAdapter() {
@@ -63,7 +65,7 @@ class H5Game extends egret.DisplayObjectContainer {
         egret.registerImplementation("eui.IAssetAdapter", new AssetAdapter());
         egret.registerImplementation("eui.IThemeAdapter", new ThemeAdapter());
         let thread = 4;
-        if (Global.Config.isNative) {
+        if (GConfig.isNative) {
             thread = 8;
         }
         RES.setMaxLoadingThread(thread);
@@ -88,19 +90,24 @@ class H5Game extends egret.DisplayObjectContainer {
                 this.loadResConfig();
                 break;
             case LoadingSteps.ServerMsg:
-                this.callServerMsg();
+                // this.callServerMsg();
+                this.onLoadingStep(step);
                 break;
             case LoadingSteps.Login:
-                this.startLogin();
+                // this.startLogin();
+                this.onLoadingStep(step);
                 break;
             case LoadingSteps.ProtoConfig:
-                this.loadProtoConfig();
+                // this.loadProtoConfig();
+                this.onLoadingStep(step);
                 break;
             case LoadingSteps.SocketConnected:
-                this.connectSocket();
+                // this.connectSocket();
+                this.onLoadingStep(step);
                 break;
             case LoadingSteps.GameJs:
-                this.loadGameJs();
+                // this.loadGameJs();
+                this.onLoadingStep(step);
                 break;
             case LoadingSteps.ThemeConfig:
                 this.loadThemeConfig();
@@ -110,6 +117,9 @@ class H5Game extends egret.DisplayObjectContainer {
                 this._loadingUI && this._loadingUI.dispose();
                 this._loginUI && this._loginUI.dispose();
                 this._loader && this._loader.dispose();
+                
+                let main = egret.getDefinitionByName("h5game.Main");
+                main.startup();
                 break;
         }
     }
@@ -119,18 +129,18 @@ class H5Game extends egret.DisplayObjectContainer {
         RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         let url;
-        if (Global.Config.isNative || Global.Config.isWxgame) {
+        if (GConfig.isNative || GConfig.isWxgame) {
             if (!console.assert) {
                 console.assert = function () {
                     return true;
                 }
             }
-            url = Global.Config.isWxgame ? "default.res.json" : Global.Config.resRoot + "default.res.json";
+            url = GConfig.isWxgame ? "default.res.json" : GConfig.resRoot + "default.res.json";
         } else {
-            url = Global.Config.resRoot + "default.res.json";
+            url = GConfig.resRoot + "default.res.json";
         }
-        url += ("?v=" + Global.Config.version);
-        RES.loadConfig(url, Global.Config.resRoot);
+        url += ("?v=" + GConfig.version);
+        RES.loadConfig(url, GConfig.resRoot);
     }
 
 
@@ -154,7 +164,7 @@ class H5Game extends egret.DisplayObjectContainer {
     }
 
     private loadProtoConfig() {
-        if (Global.Config.isWxgame) {
+        if (GConfig.isWxgame) {
             Bus.Event.dispatchEvent(LoadingEvent.LOADING_STEP, LoadingSteps.ProtoConfig);
         } else {
             RES.createGroup("proto", ["game_proto"]);
@@ -168,6 +178,7 @@ class H5Game extends egret.DisplayObjectContainer {
 
     private onResourceLoadComplete(groupName: string): void {
         if (groupName == "proto") {
+            Bus.Cmd.initProtobuf();
             Bus.Event.dispatchEvent(LoadingEvent.LOADING_STEP, LoadingSteps.ProtoConfig);
         }
     }
@@ -178,7 +189,7 @@ class H5Game extends egret.DisplayObjectContainer {
 
     private connectSocket() {
         Bus.Cmd.addCallback(egret.Event.CONNECT, this.onSocketConnected, this);
-        Bus.Cmd.connect(Global.Config.serverAddress, Global.Config.serverPort);
+        Bus.Cmd.connect(GConfig.serverAddress, GConfig.serverPort);
     }
 
     private onSocketConnected() {
@@ -187,8 +198,8 @@ class H5Game extends egret.DisplayObjectContainer {
     }
 
     private loadThemeConfig() {
-        let url = Global.Config.resRoot + "default.thm.json";
-        url += ("?v=" + Global.Config.version);
+        let url = GConfig.resRoot + "default.thm.json";
+        url += ("?v=" + GConfig.version);
         new ThemeLoader(url, this.stage, this.onThemeComplete, this);
     }
 
@@ -197,11 +208,11 @@ class H5Game extends egret.DisplayObjectContainer {
     }
 
     private loadGameJs() {
-        let jscode = egret.getDefinitionByName("game.Main");
+        let jscode = egret.getDefinitionByName("h5game.Main");
         if (jscode) {
             Bus.Event.dispatchEvent(LoadingEvent.LOADING_STEP, LoadingSteps.GameJs);
         } else {
-            Global.External.loadScript(["main.min.js"], function () {
+            GExternal.loadScript(["main.min.js"], function () {
                 Bus.Event.dispatchEvent(LoadingEvent.LOADING_STEP, LoadingSteps.GameJs);
             }, false);
         }

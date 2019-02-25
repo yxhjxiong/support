@@ -2,67 +2,67 @@
  * 全局配置
  * @author zx
  */
-class GlobalConfig {
+class GConfig {
 	/** 版本号 */
-	public version: string = "201902191733";
+	public static version: string = "201902191733";
 
 	/** 游戏类型(0：原生，1：微信小游戏) */
-	public gameType: number = 1;
+	public static gameType: number = 1;
 	/** 游戏名字 */
-	public gameName: string = "";
+	public static gameName: string = "";
 	/** 服务端地址 */
-	public serverAddress: string = null;
+	public static serverAddress: string = null;
 	/** 服务端端口 */
-	public serverPort: number = 0;
+	public static serverPort: number = 0;
 	/** 平台 */
-	public platform: string = null;
+	public static platform: string = null;
 	/** cdn地址 */
-	public cdn: string = null;
+	public static cdn: string = null;
 	/** 资源根目录 */
-	public resRoot:string = "resource/";
+	public static resRoot:string = "resource/";
 	/** 区号 */
-	public zoneId: number = 0;
+	public static zoneId: number = 0;
 	/** 登录名 */
-	public loginName: string = null;
+	public static loginName: string = null;
 	/**  */
-	public ticket: string = null;
+	public static ticket: string = null;
 	/**  */
-	public timestamp: number = 0;
+	public static timestamp: number = 0;
 	/** 官网地址 */
-	public officialUrl: string = null;
+	public static officialUrl: string = null;
 	/** 论坛地址 */
-	public BBSUrl: string = null;
+	public static BBSUrl: string = null;
 	/** 充值地址 */
-	public rechargeUrl: string = null;
+	public static rechargeUrl: string = null;
 	/** 是否使用游客模式(0:否 1:是) */
-	public guestMode: number = 0;
+	public static guestMode: number = 0;
 
 	/** socket调试开关 */
-	public socketDebug: Boolean = false;
+	public static socketDebug: Boolean = false;
 	/** 本地缓存开关 */
-	public cacherOpen: Boolean = false;
+	public static cacherOpen: Boolean = false;
 	/** 加载日志上传开关 */
-	public loadRecordOpen: Boolean = false;
+	public static loadRecordOpen: Boolean = false;
 
 	/** 所在城市 */
-	public city: string = "";
+	public static city: string = "";
 	/** 游戏开始时间 */
-	public startTime: number;
+	public static startTime: number;
 	/** 游戏开服时间 */
-	public openGameTime: number = 0;
+	public static openGameTime: number = 0;
 	/** 创建角色时间戳*/
-	public creatRoleTime: number = 0;
+	public static creatRoleTime: number = 0;
 
 	/** 默认字体 */
-	public fontFamily: string = "SimHei";
+	public static fontFamily: string = "SimHei";
 	/** 是否https */
-	public isHttps: boolean = true;
+	public static isHttps: boolean = true;
 	/** 是否启用protobuf */
-	public isProto: boolean = true;
+	public static isProtoBuf: boolean = true;
 	/** 缩放模式 */
-	public scaleMode: string = "fixedWidth";
+	public static scaleMode: string = "fixedWidth";
 
-	public init(rawCfg: any): void {
+	public static init(rawCfg: any): void {
 		let self = this;
 		if (rawCfg == null) {
 			self.gameName = "game";
@@ -100,12 +100,12 @@ class GlobalConfig {
 	}
 
 	/** 是否原生 */
-	public get isNative(): boolean {
+	public static get isNative(): boolean {
 		return this.gameType == 0;
 	}
 
 	/** 是否微信小游戏 */
-	public get isWxgame(): boolean {
+	public static get isWxgame(): boolean {
 		return this.gameType == 1;
 	}
 }

@@ -1,4 +1,4 @@
-class GroupLoader extends egret.HashObject implements support.IDispose {
+class GroupLoader extends egret.HashObject implements IDispose {
 
 	private _groups: any[] = [];
 
